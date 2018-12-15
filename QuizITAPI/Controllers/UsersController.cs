@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
+using QuizITAPI.DTO;
 using QuizITAPI.Services;
 
 namespace QuizITAPI.Controllers
@@ -33,7 +34,7 @@ namespace QuizITAPI.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(user);
+            return Ok(user.Token);
         }
 
 
@@ -91,20 +92,20 @@ namespace QuizITAPI.Controllers
         //    return NoContent();
         //}
 
-        //// POST: api/Users
-        //[HttpPost]
-        //public async Task<IActionResult> PostUser([FromBody] User user)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        // POST: api/Users
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult PostUser([FromBody] UserDTO user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    _context.Users.Add(user);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetUser", new { id = user.UserId }, user);
-        //}
+            int id = _userService.AddUser(user.EMail, user.Password);
+            
+            return CreatedAtAction("PostUser", new { Id = id });
+        }
 
         //// DELETE: api/Users/5
         //[HttpDelete("{id}")]

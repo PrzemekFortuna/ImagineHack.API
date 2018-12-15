@@ -13,6 +13,8 @@ namespace QuizITAPI.DB.Model
         public int RoomId { get; set; }
 
         public int QuizId { get; set; }
+        public int MaxUsersCount { get; set; }
+        public string Name { get; set; }
         public Quiz Quiz { get; set; }
 
         public List<RoomUser> RoomUsers { get; set; }
