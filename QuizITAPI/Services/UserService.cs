@@ -61,6 +61,7 @@ namespace QuizITAPI.Services
 
         public int AddUser(string email, string password)
         {
+
             User user = new User()
             {
                 EMail = email,
@@ -70,6 +71,11 @@ namespace QuizITAPI.Services
             _context.SaveChanges();
 
             return user.UserId;
+        }
+
+        public bool UserExists(string email)
+        {
+            return _context.Users.Any(u => u.EMail == email);
         }
     }
 }
