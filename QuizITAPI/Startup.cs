@@ -62,6 +62,7 @@ namespace QuizITAPI
             services.AddDbContext<QuizItContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureDB")), ServiceLifetime.Singleton);
             // configure DI for application services
             services.AddSingleton<UserService>();
+            services.AddSingleton<QuizService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

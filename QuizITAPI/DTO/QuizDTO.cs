@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using QuizITAPI.DB.Model;
 
-namespace QuizITAPI.DB.Model
+namespace QuizITAPI.DTO
 {
-    public class Quiz
+    public class QuizDTO
     {
-        [Key]
         public int QuizId { get; set; }
-        [Required]
         public Access Access { get; set; }
 
-        [Required]
         public int AuthorId { get; set; }
-        public User Author { get; set; }
+        public UserDTO Author { get; set; }
 
-        public List<Question> Questions { get; set; }
-        public List<Room> Rooms{ get; set; }
+        public List<QuestionDTO> Questions { get; set; }
     }
 }
