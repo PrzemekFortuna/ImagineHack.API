@@ -44,7 +44,12 @@ namespace QuizITAPI.DB
             modelBuilder.Entity<User>(e =>
             {
                 e.HasIndex(u => u.EMail).IsUnique();
-
+                e.HasData(new User()
+                {
+                    UserId = 1,
+                    EMail = "testEmail@gmail.com",
+                    Password = "Password"
+                });
                 e.HasMany(c => c.RoomUsers)
                     .WithOne(d => d.User)
                     .OnDelete(DeleteBehavior.ClientSetNull);
