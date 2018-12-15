@@ -8,7 +8,9 @@ namespace QuizITAPI.DB.Model
     public class Quiz
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
         public Access Access { get; set; }
+
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

@@ -11,5 +11,7 @@ namespace QuizITAPI.DB.Model
         public int QuestionId { get; set; }
         public bool IsCorrect { get; set; }
         public string Content { get; set; }
+
+        public Question Question { get; set; }
     }
 }
