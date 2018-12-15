@@ -15,7 +15,7 @@ namespace QuizITAPI.DB.Model
         public string EMail { get; set; }
         [Required]
         public string Password { get; set; }
-
+        public string Token { get; set; }
         public List<RoomUser> RoomUsers { get; set; }
         public List<Quiz> Quizes { get; set; }
 
