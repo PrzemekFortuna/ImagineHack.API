@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizITAPI", "QuizITAPI\QuizITAPI.csproj", "{F74322D7-30B9-4F51-B7FB-CF2A9651EACB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizITAPI.Lib", "..\QuizITAPI.Lib\QuizITAPI.Lib.csproj", "{752FE299-FB38-48EC-A243-BF5A45EAD94D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F74322D7-30B9-4F51-B7FB-CF2A9651EACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F74322D7-30B9-4F51-B7FB-CF2A9651EACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F74322D7-30B9-4F51-B7FB-CF2A9651EACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{752FE299-FB38-48EC-A243-BF5A45EAD94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{752FE299-FB38-48EC-A243-BF5A45EAD94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{752FE299-FB38-48EC-A243-BF5A45EAD94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{752FE299-FB38-48EC-A243-BF5A45EAD94D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
