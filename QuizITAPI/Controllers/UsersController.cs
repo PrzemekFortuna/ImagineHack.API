@@ -36,24 +36,25 @@ namespace QuizITAPI.Controllers
             return Ok(user);
         }
 
-        //// GET: api/Users/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetUser([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
 
-        //    var user = await _context.Users.FindAsync(id);
+        // GET: api/Users/5
+        [HttpGet("{id}")]
+        public  IActionResult GetUser([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var user = _userService.GetUser(id);
 
-        //    return Ok(user);
-        //}
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            return Ok(user);
+        }
 
         //// PUT: api/Users/5
         //[HttpPut("{id}")]
