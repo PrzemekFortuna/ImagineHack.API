@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
+using QuizITAPI.DTO;
 
 namespace QuizITAPI.Services
 {
@@ -15,14 +17,85 @@ namespace QuizITAPI.Services
             _context = context;
         }
 
-        public List<Quiz> GetQuizes(int authorId)
+        public List<QuizDTO> GetQuizes(int authorId)
         {
-            return _context.Quizes.Where(x => x.AuthorId == authorId).ToList();
+            var quiz= _context.Quizes.Where(x => x.AuthorId == authorId)
+                .Include(q=>q.Questions)
+                .Select(q=> new
+                {
+                    Quiz = q,
+                    Question = q.Questions
+                        .Select(qu=> new
+                        {
+                            Answers= qu.Answers.Select( a=> new
+                            {
+                                a.Content,
+                                a.IsCorrect
+                            }),
+                            qu.Content,
+                            qu.Type,
+                            qu.UrlImage
+                        })
+                })
+                .ToList();
+            return quiz.Select(t => new QuizDTO()
+            {
+                Access = t.Quiz.Access,
+                AuthorId = t.Quiz.AuthorId,
+                QuizId = t.Quiz.QuizId,
+                Questions = t.Question.Select(c => new QuestionDTO()
+                {
+                    Content = c.Content,
+                    Type = c.Type,
+                    UrlImage = c.UrlImage,
+                    Answers = c.Answers.Select(a=> new AnswerDTO()
+                    {
+                        Content = a.Content,
+                        IsCorrect = a.IsCorrect
+                    }).ToList()
+                }).ToList()
+            }).ToList();
         }
 
-        public List<Quiz> GetPublicQuizes()
+        public List<QuizDTO> GetPublicQuizes()
         {
-            return _context.Quizes.Where(x => x.Access == Access.Public).ToList();
+            var quiz = _context.Quizes.Where(x => x.Access == Access.Public)
+                .Include(q => q.Questions)
+                .Select(q => new
+                {
+                    Quiz = q,
+                    Question = q.Questions
+                        .Select(qu => new
+                        {
+                            Answers = qu.Answers.Select(a => new
+                            {
+                                a.Content,
+                                a.IsCorrect
+                            }),
+                            qu.Content,
+                            qu.Type,
+                            qu.UrlImage
+                        })
+                })
+                .ToList();
+            return quiz.Select(t => new QuizDTO()
+            {
+                Access = t.Quiz.Access,
+                AuthorId = t.Quiz.AuthorId,
+                QuizId = t.Quiz.QuizId,
+                Questions = t.Question.Select(c => new QuestionDTO()
+                {
+                    Content = c.Content,
+                    Type = c.Type,
+                    UrlImage = c.UrlImage,
+                    Answers = c.Answers.Select(a => new AnswerDTO()
+                    {
+                        Content = a.Content,
+                        IsCorrect = a.IsCorrect
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+           
         }
 
         public int AddQuiz(Quiz quiz)

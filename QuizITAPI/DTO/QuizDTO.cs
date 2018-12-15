@@ -13,7 +13,6 @@ namespace QuizITAPI.DTO
         public Access Access { get; set; }
 
         public int AuthorId { get; set; }
-        public UserDTO Author { get; set; }
 
         public List<QuestionDTO> Questions { get; set; }
     }

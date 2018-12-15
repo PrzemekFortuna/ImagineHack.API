@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
+using QuizITAPI.DTO;
 using QuizITAPI.Services;
 
 namespace QuizITAPI.Controllers
@@ -24,14 +25,14 @@ namespace QuizITAPI.Controllers
 
         // GET: api/Quizs
         [HttpGet]
-        public IEnumerable<Quiz> GetQuizes()
+        public IEnumerable<QuizDTO> GetQuizes()
         {
             return _service.GetPublicQuizes();
         }
 
         // GET: api/Quizs/5
         [HttpGet("{id}")]
-        public IEnumerable<Quiz> GetQuiz([FromRoute] int id)
+        public IEnumerable<QuizDTO> GetQuiz([FromRoute] int id)
         {
 
             return  _service.GetQuizes(id);
