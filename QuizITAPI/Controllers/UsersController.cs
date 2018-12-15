@@ -101,10 +101,14 @@ namespace QuizITAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if(!_userService.UserExists(user.EMail))
+            {
+                int id = _userService.AddUser(user.EMail, user.Password);
+                return CreatedAtAction("PostUser", new { Id = id });
+            }
 
-            int id = _userService.AddUser(user.EMail, user.Password);
+            return BadRequest(new { message = "User with given email already exists!" });
             
-            return CreatedAtAction("PostUser", new { Id = id });
         }
 
         //// DELETE: api/Users/5
