@@ -36,7 +36,7 @@ namespace QuizITAPI.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.UserId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(14),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -44,12 +44,14 @@ namespace QuizITAPI.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
 
+            user.Password = null;
+
             return user;
         }
 
         public User GetUser(int id)
         {
-            return _context.Users.First(x => x.Id == id);
+            return _context.Users.FirstOrDefault(x => x.UserId == id);
         }
 
         public User GetUser(string email)
