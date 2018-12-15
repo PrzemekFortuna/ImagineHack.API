@@ -18,12 +18,12 @@ namespace QuizITAPI.Services
 
         public User GetUser()
         {
-
+            return null;
         }
 
         public int AddUser(string email, string password)
         {
-            
+            return 0;
         }
     }
 }

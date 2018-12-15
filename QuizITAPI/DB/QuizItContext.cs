@@ -29,33 +29,39 @@ namespace QuizITAPI.DB
 
         public QuizItContext() : base(new DbContextOptionsBuilder().UseSqlServer(ConnString).Options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Room>(e =>
+            //{
+            //    e.HasOne(q => q.Quiz)
+            //        .WithMany(r => r.Rooms)
+            //        .OnDelete(DeleteBehavior.Cascade);
+            //});'
+
             modelBuilder.Entity<User>(e =>
             {
                 e.HasIndex(u => u.EMail).IsUnique();
-                e.HasMany<RoomUser>()
-                    .WithOne(RoomUser => RoomUser.User)
+
+                e.HasMany(c => c.RoomUsers)
+                    .WithOne(d => d.User)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Room>(e =>
             {
-                e.HasMany<RoomUser>()
-                    .WithOne(roomUser => roomUser.Room)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                e.HasMany(c => c.RoomUsers)
+                    .WithOne(d => d.Room)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
+
 
             modelBuilder.Entity<RoomUser>(e =>
                 {
-                    e.HasKey(rU => new {rU.RoomId, rU.UserId});
-
-                    e.HasOne(rU => rU.Room)
-                        .WithMany(r => r.RoomUsers)
-                        .OnDelete(DeleteBehavior.Cascade); ;
+                    e.HasKey(rU => new { rU.RoomId, rU.UserId });
+                    e.HasOne(rU => rU.User).WithMany(c => c.RoomUsers).OnDelete(DeleteBehavior.ClientSetNull);
                 }
                 );
 
