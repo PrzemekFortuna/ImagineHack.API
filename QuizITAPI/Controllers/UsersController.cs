@@ -34,7 +34,7 @@ namespace QuizITAPI.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(user);
+            return Ok(user.Token);
         }
 
 
