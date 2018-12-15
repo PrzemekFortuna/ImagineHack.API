@@ -32,6 +32,11 @@ namespace QuizITAPI.DB
 
         }
 
+        public QuizItContext(DbContextOptions dbContextOptions) :base(dbContextOptions)
+        {
+
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Room>(e =>

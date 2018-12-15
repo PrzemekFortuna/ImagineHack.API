@@ -8,11 +8,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using QuizITAPI.DB;
 using QuizITAPI.Helpers;
 using QuizITAPI.Services;
 
@@ -57,8 +59,9 @@ namespace QuizITAPI
                 };
             });
 
+            services.AddDbContext<QuizItContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureDB")), ServiceLifetime.Singleton);
             // configure DI for application services
-            services.AddScoped<UserService, UserService>();
+            services.AddSingleton<UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
