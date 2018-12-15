@@ -28,9 +28,29 @@ namespace QuizITAPI.DB
         {
             modelBuilder.Entity<User>(e =>
             {
-                e.HasIndex(u => u.EMail).IsUnique(); 
-                e.HasMany<RoomUser>().WithOne(RoomUser=>RoomUser.)
-            })
+                e.HasIndex(u => u.EMail).IsUnique();
+                e.HasMany<RoomUser>()
+                    .WithOne(RoomUser => RoomUser.User)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<Room>(e =>
+            {
+                e.HasMany<RoomUser>()
+                    .WithOne(roomUser => roomUser.Room)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<RoomUser>(e =>
+                {
+                    e.HasKey(rU => new {rU.RoomId, rU.UserId});
+
+                    e.HasOne(rU => rU.Room)
+                        .WithMany(r => r.RoomUsers)
+                        .OnDelete(DeleteBehavior.Cascade); ;
+                }
+                );
+
         }
     }
 }

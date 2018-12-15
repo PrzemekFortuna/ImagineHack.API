@@ -9,7 +9,7 @@ namespace QuizITAPI.DB.Model
     {
         public int Id { get; set; }
         public string Content { get; set; }
-        public string UrlContent { get; set; }
+        public string UrlImage { get; set; }
         public QuestionType Type { get; set; }
 
         public int QuizId { get; set; }
