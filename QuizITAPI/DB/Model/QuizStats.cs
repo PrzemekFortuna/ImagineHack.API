@@ -7,5 +7,6 @@ namespace QuizITAPI.DB.Model
 {
     public class QuizStats
     {
+  
     }
 }

@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace QuizITAPI.DB.Model
 {
-    public class Quiz
+    public class Room
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public Access Access { get; set; }
+        public int HostId { get; set; }
+        public int QuizId { get; set; }
     }
 }
