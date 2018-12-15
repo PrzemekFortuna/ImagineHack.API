@@ -47,18 +47,24 @@ namespace QuizITAPI.Services
             return user;
         }
 
-        public User GetUser()
+        public User GetUser(int id)
         {
-
+            return _context.Users.First(x => x.Id == id);
         }
 
-        public int AddUser(string email, string password)
+        public User GetUser(string email)
+        {
+            return _context.Users.First(x => x.EMail == email);
+        }
+
+        public void AddUser(string email, string password)
         {
             _context.Users.Add(new User()
             {
                 EMail = email,
                 Password = password
             });
+            _context.SaveChanges();
         }
     }
 }
