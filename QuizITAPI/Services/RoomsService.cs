@@ -73,7 +73,7 @@ namespace QuizITAPI.Services
             
             var room = _context.Rooms.Include(r => r.RoomUsers).FirstOrDefault(r => r.RoomId == roomId);
 
-            int currentUsers = _context.RoomUsers.Where(c => c.RoomId == roomId).Count();
+            int currentUsers = _context.RoomUsers.Count(c => c.RoomId == roomId);
             if (currentUsers >= _context.Rooms.First(c => c.RoomId == roomId).MaxUsersCount)
                 return false;
 
@@ -92,6 +92,17 @@ namespace QuizITAPI.Services
             }
 
             return false;
+        }
+
+        public bool RemoveUserFromRoom(int roomId, int userId)
+        {
+
+            var roomUser = _context.RoomUsers.FirstOrDefault(ru => ru.UserId == userId && ru.RoomId == roomId);
+            if (roomUser == null)
+                return false;
+
+            _context.RoomUsers.Remove(roomUser);
+            return true;          
         }
 
         public RoomDTO GetRoom(int id)

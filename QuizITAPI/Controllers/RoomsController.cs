@@ -79,5 +79,20 @@ namespace QuizITAPI.Controllers
 
             return Ok();
         }
+        [HttpPost("deleteuser/{id}")]
+        public IActionResult RemoveUserFromRoom([FromRoute]int id, [FromBody] int userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_roomsService.RemoveUserFromRoom(id, userId))
+            {
+                return BadRequest(new { message = "User is not in room" });
+            }
+
+            return Ok();
+        }
     }
 }
