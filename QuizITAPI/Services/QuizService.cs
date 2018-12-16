@@ -43,6 +43,8 @@ namespace QuizITAPI.Services
                 Access = t.Quiz.Access,
                 AuthorId = t.Quiz.AuthorId,
                 QuizId = t.Quiz.QuizId,
+                Name = t.Quiz.Name,
+                Description = t.Quiz.Description,
                 Questions = t.Question.Select(c => new QuestionDTO()
                 {
                     Content = c.Content,
@@ -83,6 +85,8 @@ namespace QuizITAPI.Services
                 Access = t.Quiz.Access,
                 AuthorId = t.Quiz.AuthorId,
                 QuizId = t.Quiz.QuizId,
+                Name = t.Quiz.Name,
+                Description = t.Quiz.Description,
                 Questions = t.Question.Select(c => new QuestionDTO()
                 {
                     Content = c.Content,
