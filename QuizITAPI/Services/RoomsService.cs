@@ -90,8 +90,7 @@ namespace QuizITAPI.Services
                     UserId = userId
                 });
                 _context.SaveChanges();
-                var hub = new ChatHub();
-                Task.Run(async () => await hub.SendMessage($"User {userId} joined room {roomId}")); ;
+                
                 return true;
             }
 

@@ -9,9 +9,16 @@ namespace QuizITAPI.Helpers
 
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string message)
+        public async Task JoinRoom(string roomName,string message)
         {
-             await Clients.All.SendAsync("sendToAll", message);
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            await Clients.Group(roomName).SendAsync("joinedMethod",message);
+        }
+        public async Task LeaveRoom(string roomName, string message)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+            await Clients.Group(roomName).SendAsync("leftMethod",message);
         }
     }
+
 }
