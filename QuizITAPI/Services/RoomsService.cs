@@ -70,12 +70,17 @@ namespace QuizITAPI.Services
 
         public bool AddUserToRoom(int roomId, int userId)
         {
+            
+            var room = _context.Rooms.Include(r => r.RoomUsers).FirstOrDefault(r => r.RoomId == roomId);
+
+            int currentUsers = _context.RoomUsers.Where(c => c.RoomId == roomId).Count();
+            if (currentUsers >= _context.Rooms.First(c => c.RoomId == roomId).MaxUsersCount)
+                return false;
+
             if (_context.Rooms.Any(r => r.RoomUsers.Any(ru => ru.UserId == userId && ru.RoomId == roomId)))
                 return false;
 
-            var room = _context.Rooms.Include(r => r.RoomUsers).FirstOrDefault(r => r.RoomId == roomId);
-
-            if(room != null)
+            if (room != null)
             {
                 room.RoomUsers.Add(new RoomUser
                 {
