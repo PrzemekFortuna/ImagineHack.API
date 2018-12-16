@@ -61,5 +61,21 @@ namespace QuizITAPI.Controllers
 
             return CreatedAtAction("GetRoom", new { id = roomId });
         }
+
+        [HttpPost("adduser/{id}")]
+        public IActionResult AddUserToRoom([FromRoute]int id, [FromBody] int userId)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(!_roomsService.AddUserToRoom(id, userId))
+            {
+                return BadRequest(new { message = "User is already in room" });
+            }
+
+            return Ok();
+        }
     }
 }

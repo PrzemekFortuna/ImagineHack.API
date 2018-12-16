@@ -30,7 +30,6 @@ namespace QuizITAPI.Controllers
             var result = await _ocrService.MakeOCRRequest(url);
 
             return Ok(result);
-            //return CreatedAtAction("AddQuiz", new { Id = id });
         }
     }
 }

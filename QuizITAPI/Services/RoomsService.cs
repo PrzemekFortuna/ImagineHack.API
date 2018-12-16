@@ -21,27 +21,27 @@ namespace QuizITAPI.Services
         public List<RoomDTO> GetAllRooms()
         {
             return _context.Rooms.Include(r => r.RoomUsers)
-                .Select(t=> new
+                .Select(t => new
                 {
-                    Room= t,
-                    RoomUsers= t.RoomUsers.Select(c=> new
+                    Room = t,
+                    RoomUsers = t.RoomUsers.Select(c => new
                     {
                         c.IsHost,
                         t.RoomId,
                         c.UserId
                     })
-                }).ToList().Select(d=> new RoomDTO
+                }).ToList().Select(d => new RoomDTO
                 {
                     MaxUsersCount = d.Room.MaxUsersCount,
-                    Name=d.Room.Name,
-                    QuizId=d.Room.QuizId,
-                    RoomId=d.Room.RoomId,
-                    UserId=d.RoomUsers.First(c=>c.IsHost==true).UserId,
-                    RoomUsers=d.RoomUsers.Select(f=> new RoomUser
+                    Name = d.Room.Name,
+                    QuizId = d.Room.QuizId,
+                    RoomId = d.Room.RoomId,
+                    UserId = d.RoomUsers.First(c => c.IsHost == true).UserId,
+                    RoomUsers = d.RoomUsers.Select(f => new RoomUser
                     {
-                        IsHost=f.IsHost,
-                        RoomId=f.RoomId,
-                        UserId=f.UserId
+                        IsHost = f.IsHost,
+                        RoomId = f.RoomId,
+                        UserId = f.UserId
                     }).ToList()
                 }).ToList();
         }
@@ -66,6 +66,27 @@ namespace QuizITAPI.Services
             _context.SaveChanges();
 
             return room.RoomId;
+        }
+
+        public bool AddUserToRoom(int roomId, int userId)
+        {
+            if (_context.Rooms.Any(r => r.RoomUsers.Any(ru => ru.UserId == userId && ru.RoomId == roomId)))
+                return false;
+
+            var room = _context.Rooms.Include(r => r.RoomUsers).FirstOrDefault(r => r.RoomId == roomId);
+
+            if(room != null)
+            {
+                room.RoomUsers.Add(new RoomUser
+                {
+                    RoomId = roomId,
+                    UserId = userId
+                });
+                _context.SaveChanges();
+                return true;
+            }
+
+            return false;
         }
 
         public RoomDTO GetRoom(int id)
