@@ -36,7 +36,8 @@ namespace QuizITAPI.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserId.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.EMail) 
                 }),
                 Expires = DateTime.UtcNow.AddDays(14),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
