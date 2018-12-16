@@ -41,7 +41,13 @@ namespace QuizITAPI.Controllers
             }
 
             return Ok(room);
-        }       
+        }
+
+        [HttpGet]
+        public IEnumerable<RoomDTO> GetAllRooms()
+        {
+            return _roomsService.GetAllRooms();
+        }
         
         [HttpPost("addroom")]
         public IActionResult PostRoom([FromBody] RoomDTO roomDTO)

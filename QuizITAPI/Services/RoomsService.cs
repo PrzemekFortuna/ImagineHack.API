@@ -18,6 +18,34 @@ namespace QuizITAPI.Services
             _context = context;
         }
 
+        public List<RoomDTO> GetAllRooms()
+        {
+            return _context.Rooms.Include(r => r.RoomUsers)
+                .Select(t=> new
+                {
+                    Room= t,
+                    RoomUsers= t.RoomUsers.Select(c=> new
+                    {
+                        c.IsHost,
+                        t.RoomId,
+                        c.UserId
+                    })
+                }).ToList().Select(d=> new RoomDTO
+                {
+                    MaxUsersCount = d.Room.MaxUsersCount,
+                    Name=d.Room.Name,
+                    QuizId=d.Room.QuizId,
+                    RoomId=d.Room.RoomId,
+                    UserId=d.RoomUsers.First(c=>c.IsHost==true).UserId,
+                    RoomUsers=d.RoomUsers.Select(f=> new RoomUser
+                    {
+                        IsHost=f.IsHost,
+                        RoomId=f.RoomId,
+                        UserId=f.UserId
+                    }).ToList()
+                }).ToList();
+        }
+
         public int AddRoom(RoomDTO roomDTO)
         {
             Room room = new Room
