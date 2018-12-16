@@ -64,6 +64,7 @@ namespace QuizITAPI
             services.AddSingleton<UserService>();
             services.AddSingleton<QuizService>();
             services.AddSingleton<RoomsService>();
+            services.AddSingleton<OCRService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
