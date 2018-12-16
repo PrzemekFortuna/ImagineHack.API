@@ -1,4 +1,5 @@
-﻿using QuizITAPI.DB;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
 using QuizITAPI.DTO;
 using System;
@@ -23,18 +24,67 @@ namespace QuizITAPI.Services
             {
                 Name = roomDTO.Name,
                 MaxUsersCount = roomDTO.MaxUsersCount,
-                Quiz = roomDTO.Quiz,
-                QuizId = roomDTO.QuizId
+                QuizId = roomDTO.QuizId,
+                RoomUsers = new List<RoomUser>()
             };
 
             room.RoomUsers.Add(new RoomUser
             {
                 IsHost = true,
                 UserId = roomDTO.UserId,
-                RoomId = room.RoomId
             });
 
-            return 0;
+            _context.Rooms.Add(room);
+            _context.SaveChanges();
+
+            return room.RoomId;
+        }
+
+        public RoomDTO GetRoom(int id)
+        {
+            var room = _context.Rooms
+                .Where(r => r.RoomId == id)
+                .Select(r => new RoomDTO
+                {
+                    MaxUsersCount = r.MaxUsersCount,
+                    Name = r.Name,
+                    QuizId = r.QuizId,
+                    RoomId = r.RoomId,
+                    RoomUsers = _context.RoomUsers
+                    .Where(ru => ru.RoomId == r.RoomId)
+                    .Select(ru => new RoomUser
+                    {
+                        IsHost = ru.IsHost,
+                        RoomId = ru.RoomId,
+                        UserId = ru.UserId
+                    }).ToList()
+
+                }).FirstOrDefault();
+
+            return room;
+        }
+
+        public RoomDTO GetRoom(string name)
+        {
+            var room = _context.Rooms
+                .Where(r => r.Name == name)
+                .Select(r => new RoomDTO
+                {
+                    MaxUsersCount = r.MaxUsersCount,
+                    Name = r.Name,
+                    QuizId = r.QuizId,
+                    RoomId = r.RoomId,
+                    RoomUsers = _context.RoomUsers
+                    .Where(ru => ru.RoomId == r.RoomId)
+                    .Select(ru => new RoomUser
+                    {
+                        IsHost = ru.IsHost,
+                        RoomId = ru.RoomId,
+                        UserId = ru.UserId
+                    }).ToList()
+                }).FirstOrDefault();
+
+                return room;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace QuizITAPI.DTO
         public string Name { get; set; }
         public int UserId { get; set; }
         public int QuizId { get; set; }
-        public Quiz Quiz { get; set; }
+        public int RoomId { get; set; }
+        public List<RoomUser> RoomUsers { get; set; }
     }
 }

@@ -63,6 +63,7 @@ namespace QuizITAPI
             // configure DI for application services
             services.AddSingleton<UserService>();
             services.AddSingleton<QuizService>();
+            services.AddSingleton<RoomsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
