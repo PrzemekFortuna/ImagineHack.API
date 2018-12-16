@@ -5,7 +5,9 @@ using QuizITAPI.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using QuizITAPI.Helpers;
 
 namespace QuizITAPI.Services
 {
@@ -70,7 +72,7 @@ namespace QuizITAPI.Services
 
         public bool AddUserToRoom(int roomId, int userId)
         {
-            
+
             var room = _context.Rooms.Include(r => r.RoomUsers).FirstOrDefault(r => r.RoomId == roomId);
 
             int currentUsers = _context.RoomUsers.Count(c => c.RoomId == roomId);
@@ -88,6 +90,8 @@ namespace QuizITAPI.Services
                     UserId = userId
                 });
                 _context.SaveChanges();
+                var hub = new ChatHub();
+                Task.Run(async () => await hub.SendMessage($"User {userId} joined room {roomId}")); ;
                 return true;
             }
 
@@ -102,7 +106,7 @@ namespace QuizITAPI.Services
                 return false;
 
             _context.RoomUsers.Remove(roomUser);
-            return true;          
+            return true;
         }
 
         public RoomDTO GetRoom(int id)
@@ -149,7 +153,7 @@ namespace QuizITAPI.Services
                     }).ToList()
                 }).FirstOrDefault();
 
-                return room;
+            return room;
         }
     }
 }

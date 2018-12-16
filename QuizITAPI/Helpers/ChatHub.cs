@@ -11,7 +11,7 @@ namespace QuizITAPI.Helpers
     {
         public async Task SendMessage(string message)
         {
-            await Clients.All.SendAsync("sendToAll", message);
+             await Clients.All.SendAsync("sendToAll", message);
         }
     }
 }
