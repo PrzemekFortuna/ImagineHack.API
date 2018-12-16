@@ -59,7 +59,7 @@ namespace QuizITAPI.Controllers
 
             int roomId = _roomsService.AddRoom(roomDTO);
 
-            return CreatedAtAction("GetRoom", new { id = roomId });
+            return CreatedAtAction("PostRoom", new { id = roomId });
         }
 
         [HttpPost("adduser/{id}")]

@@ -82,7 +82,7 @@ namespace QuizITAPI
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<ChatHub>("chat");
+                routes.MapHub<ChatHub>("/hub/chat");
             });
 
             app.UseCors(x => x
@@ -90,6 +90,7 @@ namespace QuizITAPI
            .AllowAnyMethod()
            .AllowAnyHeader()
            .AllowCredentials());
+
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
