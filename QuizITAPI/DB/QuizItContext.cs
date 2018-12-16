@@ -39,13 +39,6 @@ namespace QuizITAPI.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Room>(e =>
-            //{
-            //    e.HasOne(q => q.Quiz)
-            //        .WithMany(r => r.Rooms)
-            //        .OnDelete(DeleteBehavior.Cascade);
-            //});'
-
             modelBuilder.Entity<User>(e =>
             {
                 e.HasIndex(u => u.EMail).IsUnique();

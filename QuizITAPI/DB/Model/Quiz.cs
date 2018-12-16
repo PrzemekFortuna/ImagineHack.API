@@ -12,6 +12,10 @@ namespace QuizITAPI.DB.Model
         public int QuizId { get; set; }
         [Required]
         public Access Access { get; set; }
+        [Required]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
 
         [Required]
         public int AuthorId { get; set; }

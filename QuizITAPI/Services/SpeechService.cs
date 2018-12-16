@@ -19,78 +19,78 @@ namespace QuizITAPI.Services
 
             // Creates an intent recognizer using file as audio input.
             // Replace with your own audio file name.
-            using (var audioInput = AudioConfig.FromStreamInput())
-            {
-                using (var recognizer = new IntentRecognizer(config, audioInput))
-                {
-                    // The TaskCompletionSource to stop recognition.
-                    var stopRecognition = new TaskCompletionSource<int>();
+            //using (var audioInput = AudioConfig.FromStreamInput())
+            //{
+            //    using (var recognizer = new IntentRecognizer(config, audioInput))
+            //    {
+            //        // The TaskCompletionSource to stop recognition.
+            //        var stopRecognition = new TaskCompletionSource<int>();
 
-                    // Creates a Language Understanding model using the app id, and adds specific intents from your model
-                    var model = LanguageUnderstandingModel.FromAppId("YourLanguageUnderstandingAppId");
-                    recognizer.AddIntent(model, "YourLanguageUnderstandingIntentName1", "id1");
-                    recognizer.AddIntent(model, "YourLanguageUnderstandingIntentName2", "id2");
-                    recognizer.AddIntent(model, "YourLanguageUnderstandingIntentName3", "any-IntentId-here");
+            //        // Creates a Language Understanding model using the app id, and adds specific intents from your model
+            //        var model = LanguageUnderstandingModel.FromAppId("YourLanguageUnderstandingAppId");
+            //        recognizer.AddIntent(model, "YourLanguageUnderstandingIntentName1", "id1");
+            //        recognizer.AddIntent(model, "YourLanguageUnderstandingIntentName2", "id2");
+            //        recognizer.AddIntent(model, "YourLanguageUnderstandingIntentName3", "any-IntentId-here");
 
-                    // Subscribes to events.
-                    recognizer.Recognizing += (s, e) => { Console.WriteLine($"RECOGNIZING: Text={e.Result.Text}"); };
+            //        // Subscribes to events.
+            //        recognizer.Recognizing += (s, e) => { Console.WriteLine($"RECOGNIZING: Text={e.Result.Text}"); };
 
-                    recognizer.Recognized += (s, e) =>
-                    {
-                        if (e.Result.Reason == ResultReason.RecognizedIntent)
-                        {
-                            Console.WriteLine($"RECOGNIZED: Text={e.Result.Text}");
-                            Console.WriteLine($"    Intent Id: {e.Result.IntentId}.");
-                            Console.WriteLine(
-                                $"    Language Understanding JSON: {e.Result.Properties.GetProperty(PropertyId.LanguageUnderstandingServiceResponse_JsonResult)}.");
-                        }
-                        else if (e.Result.Reason == ResultReason.RecognizedSpeech)
-                        {
-                            Console.WriteLine($"RECOGNIZED: Text={e.Result.Text}");
-                            Console.WriteLine($"    Intent not recognized.");
-                        }
-                        else if (e.Result.Reason == ResultReason.NoMatch)
-                        {
-                            Console.WriteLine($"NOMATCH: Speech could not be recognized.");
-                        }
-                    };
+            //        recognizer.Recognized += (s, e) =>
+            //        {
+            //            if (e.Result.Reason == ResultReason.RecognizedIntent)
+            //            {
+            //                Console.WriteLine($"RECOGNIZED: Text={e.Result.Text}");
+            //                Console.WriteLine($"    Intent Id: {e.Result.IntentId}.");
+            //                Console.WriteLine(
+            //                    $"    Language Understanding JSON: {e.Result.Properties.GetProperty(PropertyId.LanguageUnderstandingServiceResponse_JsonResult)}.");
+            //            }
+            //            else if (e.Result.Reason == ResultReason.RecognizedSpeech)
+            //            {
+            //                Console.WriteLine($"RECOGNIZED: Text={e.Result.Text}");
+            //                Console.WriteLine($"    Intent not recognized.");
+            //            }
+            //            else if (e.Result.Reason == ResultReason.NoMatch)
+            //            {
+            //                Console.WriteLine($"NOMATCH: Speech could not be recognized.");
+            //            }
+            //        };
 
-                    recognizer.Canceled += (s, e) =>
-                    {
-                        Console.WriteLine($"CANCELED: Reason={e.Reason}");
+            //        recognizer.Canceled += (s, e) =>
+            //        {
+            //            Console.WriteLine($"CANCELED: Reason={e.Reason}");
 
-                        if (e.Reason == CancellationReason.Error)
-                        {
-                            Console.WriteLine($"CANCELED: ErrorCode={e.ErrorCode}");
-                            Console.WriteLine($"CANCELED: ErrorDetails={e.ErrorDetails}");
-                            Console.WriteLine($"CANCELED: Did you update the subscription info?");
-                        }
+            //            if (e.Reason == CancellationReason.Error)
+            //            {
+            //                Console.WriteLine($"CANCELED: ErrorCode={e.ErrorCode}");
+            //                Console.WriteLine($"CANCELED: ErrorDetails={e.ErrorDetails}");
+            //                Console.WriteLine($"CANCELED: Did you update the subscription info?");
+            //            }
 
-                        stopRecognition.TrySetResult(0);
-                    };
+            //            stopRecognition.TrySetResult(0);
+            //        };
 
-                    recognizer.SessionStarted += (s, e) => { Console.WriteLine("\n    Session started event."); };
+            //        recognizer.SessionStarted += (s, e) => { Console.WriteLine("\n    Session started event."); };
 
-                    recognizer.SessionStopped += (s, e) =>
-                    {
-                        Console.WriteLine("\n    Session stopped event.");
-                        Console.WriteLine("\nStop recognition.");
-                        stopRecognition.TrySetResult(0);
-                    };
+            //        recognizer.SessionStopped += (s, e) =>
+            //        {
+            //            Console.WriteLine("\n    Session stopped event.");
+            //            Console.WriteLine("\nStop recognition.");
+            //            stopRecognition.TrySetResult(0);
+            //        };
 
 
-                    // Starts continuous recognition. Uses StopContinuousRecognitionAsync() to stop recognition.
-                    Console.WriteLine("Say something...");
-                    await recognizer.StartContinuousRecognitionAsync().ConfigureAwait(false);
+            //        // Starts continuous recognition. Uses StopContinuousRecognitionAsync() to stop recognition.
+            //        Console.WriteLine("Say something...");
+            //        await recognizer.StartContinuousRecognitionAsync().ConfigureAwait(false);
 
-                    // Waits for completion.
-                    // Use Task.WaitAny to keep the task rooted.
-                    Task.WaitAny(new[] {stopRecognition.Task});
+            //        // Waits for completion.
+            //        // Use Task.WaitAny to keep the task rooted.
+            //        Task.WaitAny(new[] {stopRecognition.Task});
 
-                    // Stops recognition.
-                    await recognizer.StopContinuousRecognitionAsync().ConfigureAwait(false);
-                }
-            }
+            //        // Stops recognition.
+            //        await recognizer.StopContinuousRecognitionAsync().ConfigureAwait(false);
+            //    }
+            //}
         }
     }
 }
