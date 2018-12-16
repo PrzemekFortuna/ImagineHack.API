@@ -14,6 +14,11 @@ namespace QuizITAPI.Helpers
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
             await Clients.Group(roomName).SendAsync("joinedMethod",message);
         }
+
+        public async Task SendMessage(string roomName, string message)
+        {
+            await Clients.Group(roomName).SendAsync("sentMethod", message);
+        }
         public async Task LeaveRoom(string roomName, string message)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
