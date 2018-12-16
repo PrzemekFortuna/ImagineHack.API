@@ -65,6 +65,7 @@ namespace QuizITAPI
             services.AddSingleton<QuizService>();
             services.AddSingleton<RoomsService>();
             services.AddSingleton<OCRService>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +79,11 @@ namespace QuizITAPI
             {
                 app.UseHsts();
             }
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("chat");
+            });
 
             app.UseCors(x => x
            .AllowAnyOrigin()
