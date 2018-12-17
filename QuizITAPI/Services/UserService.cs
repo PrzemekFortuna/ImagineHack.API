@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
 using QuizITAPI.Helpers;
+using QuizITAPI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,34 +17,24 @@ namespace QuizITAPI.Services
     public class UserService
     {
         private QuizItContext _context;
-        private readonly AppSettings _appSettings;
 
-        public UserService(IOptions<AppSettings> appSettings, QuizItContext context)
+        private IAuthenticator _authenticator;
+
+        public UserService(QuizItContext context, IAuthenticator authenticator)
         {
-            _appSettings = appSettings.Value;
             _context = context;
+            _authenticator = authenticator;
         }
 
         public User Authenticate(string email, string password)
         {
-            User user = _context.Users.SingleOrDefault(x => x.EMail == email && x.Password == password);
+            User user = _context.Users
+                .SingleOrDefault(x => x.Email == email && x.Password == password);
+
             if (user == null)
                 return null;
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.EMail) 
-                }),
-                Expires = DateTime.UtcNow.AddDays(14),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
+            _authenticator.Authenticate(user);
 
             user.Password = null;
 
@@ -57,7 +48,7 @@ namespace QuizITAPI.Services
 
         public User GetUser(string email)
         {
-            return _context.Users.First(x => x.EMail == email);
+            return _context.Users.First(x => x.Email == email);
         }
 
         public int AddUser(string email, string password)
@@ -65,7 +56,7 @@ namespace QuizITAPI.Services
 
             User user = new User()
             {
-                EMail = email,
+                Email = email,
                 Password = password
             };
             _context.Users.Add(user);
@@ -76,7 +67,7 @@ namespace QuizITAPI.Services
 
         public bool UserExists(string email)
         {
-            return _context.Users.Any(u => u.EMail == email);
+            return _context.Users.Any(u => u.Email == email);
         }
     }
 }

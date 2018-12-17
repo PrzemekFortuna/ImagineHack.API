@@ -39,7 +39,7 @@ namespace QuizITAPI.Controllers
 
             if (room == null)
             {
-                return NotFound();
+                return NotFound(new { message = $"None of the rooms match id = ${id}" });
             }
 
             return Ok(room);
@@ -74,10 +74,10 @@ namespace QuizITAPI.Controllers
 
             if(!_roomsService.AddUserToRoom(id, userId))
             {
-                return BadRequest(new { message = "User is already in room" });
+                return Conflict(new { message = "User is already in room" });
             }
 
-            return Ok();
+            return Ok(new { userId, id });
         }
         [HttpPost("deleteuser/{id}")]
         public IActionResult RemoveUserFromRoom([FromRoute]int id, [FromBody] int userId)
@@ -89,7 +89,7 @@ namespace QuizITAPI.Controllers
 
             if (!_roomsService.RemoveUserFromRoom(id, userId))
             {
-                return BadRequest(new { message = "User is not in room" });
+                return Conflict(new { message = "User is not in room" });
             }
 
             return Ok();

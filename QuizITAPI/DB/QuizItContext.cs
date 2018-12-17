@@ -41,11 +41,11 @@ namespace QuizITAPI.DB
         {
             modelBuilder.Entity<User>(e =>
             {
-                e.HasIndex(u => u.EMail).IsUnique();
+                e.HasIndex(u => u.Email).IsUnique();
                 e.HasData(new User()
                 {
                     UserId = 1,
-                    EMail = "testEmail@gmail.com",
+                    Email = "testEmail@gmail.com",
                     Password = "Password"
                 });
                 e.HasMany(c => c.RoomUsers)

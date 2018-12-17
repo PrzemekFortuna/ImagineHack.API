@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
 using QuizITAPI.DTO;
 using QuizITAPI.Services;
@@ -49,7 +43,7 @@ namespace QuizITAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var id=_service.AddQuiz(quiz);
+            var id = _service.AddQuiz(quiz);
             return CreatedAtAction("AddQuiz", new { Id = id });
         }
     }

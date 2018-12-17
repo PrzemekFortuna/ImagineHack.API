@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using QuizITAPI.DB;
 using QuizITAPI.Helpers;
+using QuizITAPI.Interfaces;
 using QuizITAPI.Services;
 
 namespace QuizITAPI
@@ -65,6 +66,7 @@ namespace QuizITAPI
             services.AddSingleton<QuizService>();
             services.AddSingleton<RoomsService>();
             services.AddSingleton<OCRService>();
+            services.AddSingleton<IAuthenticator>(new AuthenticationService(appSettings));
             services.AddSignalR();
         }
 

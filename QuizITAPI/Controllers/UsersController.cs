@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
 using QuizITAPI.DTO;
 using QuizITAPI.Services;
@@ -29,7 +22,7 @@ namespace QuizITAPI.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] User userParam)
         {
-            var user = _userService.Authenticate(userParam.EMail, userParam.Password);
+            var user = _userService.Authenticate(userParam.Email, userParam.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -66,14 +59,14 @@ namespace QuizITAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if(!_userService.UserExists(user.EMail))
+
+            if (_userService.UserExists(user.EMail))
             {
-                int id = _userService.AddUser(user.EMail, user.Password);
-                return CreatedAtAction("PostUser", new { Id = id });
+                return BadRequest(new { message = "User with given email already exists!" });
             }
 
-            return BadRequest(new { message = "User with given email already exists!" });
-            
+                int id = _userService.AddUser(user.EMail, user.Password);
+                return CreatedAtAction("PostUser", new { Id = id });
         }
      
     }
