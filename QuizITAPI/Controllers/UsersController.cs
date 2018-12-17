@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizITAPI.DB.Model;
 using QuizITAPI.DTO;
@@ -33,7 +34,7 @@ namespace QuizITAPI.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public  IActionResult GetUser([FromRoute] int id)
+        public IActionResult GetUser([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -62,12 +63,17 @@ namespace QuizITAPI.Controllers
 
             if (_userService.UserExists(user.EMail))
             {
-                return BadRequest(new { message = "User with given email already exists!" });
+                return StatusCode(
+                    StatusCodes.Status304NotModified,
+                    new
+                    {
+                        message = "User with given email already exists!"
+                    });
             }
 
-                int id = _userService.AddUser(user.EMail, user.Password);
-                return CreatedAtAction("PostUser", new { Id = id });
+            int id = _userService.AddUser(user.EMail, user.Password);
+            return CreatedAtAction("PostUser", new { Id = id });
         }
-     
+
     }
 }
