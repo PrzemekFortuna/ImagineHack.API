@@ -12,7 +12,7 @@ namespace QuizITAPI.DB.Model
         [Key]
         public int UserId { get; set; }
         [Required]
-        public string EMail { get; set; }
+        public string Email { get; set; }
         [Required]
         public string Password { get; set; }
         public string Token { get; set; }

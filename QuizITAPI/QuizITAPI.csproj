@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
