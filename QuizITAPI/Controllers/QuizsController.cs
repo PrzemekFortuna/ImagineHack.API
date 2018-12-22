@@ -8,6 +8,7 @@ using QuizITAPI.Services;
 
 namespace QuizITAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuizsController : ControllerBase

@@ -20,9 +20,9 @@ namespace QuizITAPI.Services
             _context = context;
         }
 
-        public List<RoomDTO> GetAllRooms()
+        public List<RoomDTO> GetAllRooms(int page, int pageSize)
         {
-            return _context.Rooms.Include(r => r.RoomUsers)
+            return _context.Rooms
                 .Select(t => new
                 {
                     Room = t,
@@ -32,7 +32,11 @@ namespace QuizITAPI.Services
                         t.RoomId,
                         c.UserId
                     })
-                }).ToList().Select(d => new RoomDTO
+                })
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList()
+                .Select(d => new RoomDTO
                 {
                     MaxUsersCount = d.Room.MaxUsersCount,
                     Name = d.Room.Name,
