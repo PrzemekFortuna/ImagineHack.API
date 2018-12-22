@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizITAPI.DB.Model;
@@ -7,7 +8,6 @@ using QuizITAPI.Services;
 
 namespace QuizITAPI.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuizsController : ControllerBase
@@ -21,17 +21,18 @@ namespace QuizITAPI.Controllers
 
         // GET: api/Quizs
         [HttpGet]
-        public IEnumerable<QuizDTO> GetQuizes()
+        public ActionResult<List<QuizDTO>> GetQuizes([Required, FromQuery] int page, [Required, FromQuery] int pageSize)
         {
-            return _service.GetPublicQuizes();
+            var quizzes = _service.GetPublicQuizes(page, pageSize);
+            return Ok(quizzes);
         }
 
         // GET: api/Quizs/5
         [HttpGet("{id}")]
-        public IEnumerable<QuizDTO> GetQuiz([FromRoute] int id)
+        public IEnumerable<QuizDTO> GetQuiz([FromRoute] int id, [Required, FromQuery] int page, [Required, FromQuery] int pageSize)
         {
 
-            return  _service.GetQuizes(id);
+            return  _service.GetQuizes(id, page, pageSize);
         }
 
         // POST: api/Quizs

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuizITAPI.DB;
 using QuizITAPI.DB.Model;
@@ -17,52 +15,10 @@ namespace QuizITAPI.Services
             _context = context;
         }
 
-        public List<QuizDTO> GetQuizes(int authorId)
+        public List<QuizDTO> GetQuizes(int authorId, int page, int pageSize)
         {
-            var quiz= _context.Quizes.Where(x => x.AuthorId == authorId)
-                .Include(q=>q.Questions)
-                .Select(q=> new
-                {
-                    Quiz = q,
-                    Question = q.Questions
-                        .Select(qu=> new
-                        {
-                            Answers= qu.Answers.Select( a=> new
-                            {
-                                a.Content,
-                                a.IsCorrect
-                            }),
-                            qu.Content,
-                            qu.Type,
-                            qu.UrlImage
-                        })
-                })
-                .ToList();
-            return quiz.Select(t => new QuizDTO()
-            {
-                Access = t.Quiz.Access,
-                AuthorId = t.Quiz.AuthorId,
-                QuizId = t.Quiz.QuizId,
-                Name = t.Quiz.Name,
-                Description = t.Quiz.Description,
-                Questions = t.Question.Select(c => new QuestionDTO()
-                {
-                    Content = c.Content,
-                    Type = c.Type,
-                    UrlImage = c.UrlImage,
-                    Answers = c.Answers.Select(a=> new AnswerDTO()
-                    {
-                        Content = a.Content,
-                        IsCorrect = a.IsCorrect
-                    }).ToList()
-                }).ToList()
-            }).ToList();
-        }
-
-        public List<QuizDTO> GetPublicQuizes()
-        {
-            var quiz = _context.Quizes.Where(x => x.Access == Access.Public)
-                .Include(q => q.Questions)
+            var quizzes = _context.Quizes
+                .Where(x => x.AuthorId == authorId)
                 .Select(q => new
                 {
                     Quiz = q,
@@ -79,8 +35,56 @@ namespace QuizITAPI.Services
                             qu.UrlImage
                         })
                 })
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
-            return quiz.Select(t => new QuizDTO()
+
+            return quizzes.Select(t => new QuizDTO()
+            {
+                Access = t.Quiz.Access,
+                AuthorId = t.Quiz.AuthorId,
+                QuizId = t.Quiz.QuizId,
+                Name = t.Quiz.Name,
+                Description = t.Quiz.Description,
+                Questions = t.Question.Select(c => new QuestionDTO()
+                {
+                    Content = c.Content,
+                    Type = c.Type,
+                    UrlImage = c.UrlImage,
+                    Answers = c.Answers.Select(a => new AnswerDTO()
+                    {
+                        Content = a.Content,
+                        IsCorrect = a.IsCorrect
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+        }
+
+        public List<QuizDTO> GetPublicQuizes(int page, int pageSize)
+        {
+            var quizzes = _context.Quizes
+                .Where(x => x.Access == Access.Public)
+                .Select(q => new
+                {
+                    Quiz = q,
+                    Question = q.Questions
+                        .Select(qu => new
+                        {
+                            Answers = qu.Answers.Select(a => new
+                            {
+                                a.Content,
+                                a.IsCorrect
+                            }),
+                            qu.Content,
+                            qu.Type,
+                            qu.UrlImage
+                        })
+                })
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return quizzes.Select(t => new QuizDTO()
             {
                 Access = t.Quiz.Access,
                 AuthorId = t.Quiz.AuthorId,
