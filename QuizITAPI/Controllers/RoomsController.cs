@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -45,10 +46,10 @@ namespace QuizITAPI.Controllers
             return Ok(room);
         }
 
-        [HttpGet]
-        public IEnumerable<RoomDTO> GetAllRooms()
+        [HttpGet("{page}/{pageSize}")]
+        public Dictionary<string, object> GetAllRooms([Required, FromQuery] int page, [Required, FromQuery] int pageSize)
         {
-            return _roomsService.GetAllRooms();
+            return _roomsService.GetAllRooms(page, pageSize);
         }
         
         [HttpPost("addroom")]

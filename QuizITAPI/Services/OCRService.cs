@@ -52,7 +52,7 @@ namespace QuizITAPI.Services
                 JsonConvert.DeserializeObject<RootObject>(contentJson).regions.ForEach(t => t.lines.ForEach(c => c.words.ForEach(d => contentString += d.text + " ")));
                 return contentString;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

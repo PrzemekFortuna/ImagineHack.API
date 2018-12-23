@@ -20,9 +20,24 @@ namespace QuizITAPI.Services
             _context = context;
         }
 
-        public List<RoomDTO> GetAllRooms()
+        public Dictionary<string, object> GetAllRooms(int page, int pageSize)
         {
-            return _context.Rooms.Include(r => r.RoomUsers)
+            List<RoomDTO> rooms = GetRooms(page, pageSize);
+
+            var roomsAmount = _context.Rooms.Count();
+
+            var result = new Dictionary<string, object>
+            {
+                { "rooms", rooms },
+                { "total", roomsAmount }
+            };
+
+            return result;
+        }
+
+        private List<RoomDTO> GetRooms(int page, int pageSize)
+        {
+            return _context.Rooms
                 .Select(t => new
                 {
                     Room = t,
@@ -32,7 +47,11 @@ namespace QuizITAPI.Services
                         t.RoomId,
                         c.UserId
                     })
-                }).ToList().Select(d => new RoomDTO
+                })
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList()
+                .Select(d => new RoomDTO
                 {
                     MaxUsersCount = d.Room.MaxUsersCount,
                     Name = d.Room.Name,
@@ -90,7 +109,7 @@ namespace QuizITAPI.Services
                     UserId = userId
                 });
                 _context.SaveChanges();
-                
+
                 return true;
             }
 

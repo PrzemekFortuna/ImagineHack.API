@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizITAPI.DB.Model;
@@ -20,18 +21,18 @@ namespace QuizITAPI.Controllers
         }
 
         // GET: api/Quizs
-        [HttpGet]
-        public IEnumerable<QuizDTO> GetQuizes()
+        [HttpGet("{page}/{pageSize}")]
+        public ActionResult<Dictionary<string, object>> GetQuizes([FromRoute] int page, [FromRoute] int pageSize)
         {
-            return _service.GetPublicQuizes();
+            var quizzes = _service.GetPublicQuizes(page, pageSize);
+            return Ok(quizzes);
         }
 
         // GET: api/Quizs/5
         [HttpGet("{id}")]
-        public IEnumerable<QuizDTO> GetQuiz([FromRoute] int id)
+        public Dictionary<string, object> GetQuiz([FromRoute] int id, [Required, FromQuery] int page, [Required, FromQuery] int pageSize)
         {
-
-            return  _service.GetQuizes(id);
+            return  _service.GetQuizes(id, page, pageSize);
         }
 
         // POST: api/Quizs
