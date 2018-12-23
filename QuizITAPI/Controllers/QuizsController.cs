@@ -22,7 +22,7 @@ namespace QuizITAPI.Controllers
 
         // GET: api/Quizs
         [HttpGet]
-        public ActionResult<List<QuizDTO>> GetQuizes([Required, FromQuery] int page, [Required, FromQuery] int pageSize)
+        public ActionResult<Dictionary<string, object>> GetQuizes([Required, FromQuery] int page, [Required, FromQuery] int pageSize)
         {
             var quizzes = _service.GetPublicQuizes(page, pageSize);
             return Ok(quizzes);
@@ -30,9 +30,8 @@ namespace QuizITAPI.Controllers
 
         // GET: api/Quizs/5
         [HttpGet("{id}")]
-        public IEnumerable<QuizDTO> GetQuiz([FromRoute] int id, [Required, FromQuery] int page, [Required, FromQuery] int pageSize)
+        public Dictionary<string, object> GetQuiz([FromRoute] int id, [Required, FromQuery] int page, [Required, FromQuery] int pageSize)
         {
-
             return  _service.GetQuizes(id, page, pageSize);
         }
 

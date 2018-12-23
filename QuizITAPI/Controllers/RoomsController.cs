@@ -47,7 +47,7 @@ namespace QuizITAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<RoomDTO> GetAllRooms([Required, FromQuery] int page, [Required, FromQuery] int pageSize)
+        public IEnumerable<Dictionary<string, object>> GetAllRooms([Required, FromQuery] int page, [Required, FromQuery] int pageSize)
         {
             return _roomsService.GetAllRooms(page, pageSize);
         }

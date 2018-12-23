@@ -20,7 +20,22 @@ namespace QuizITAPI.Services
             _context = context;
         }
 
-        public List<RoomDTO> GetAllRooms(int page, int pageSize)
+        public Dictionary<string, object> GetAllRooms(int page, int pageSize)
+        {
+            List<RoomDTO> rooms = GetRooms(page, pageSize);
+
+            var roomsAmount = _context.Rooms.Count();
+
+            var result = new Dictionary<string, object>
+            {
+                { "rooms", rooms },
+                { "total", roomsAmount }
+            };
+
+            return result;
+        }
+
+        private List<RoomDTO> GetRooms(int page, int pageSize)
         {
             return _context.Rooms
                 .Select(t => new
@@ -94,7 +109,7 @@ namespace QuizITAPI.Services
                     UserId = userId
                 });
                 _context.SaveChanges();
-                
+
                 return true;
             }
 
