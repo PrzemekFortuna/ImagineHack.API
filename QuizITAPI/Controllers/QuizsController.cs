@@ -21,8 +21,8 @@ namespace QuizITAPI.Controllers
         }
 
         // GET: api/Quizs
-        [HttpGet]
-        public ActionResult<Dictionary<string, object>> GetQuizes([Required, FromQuery] int page, [Required, FromQuery] int pageSize)
+        [HttpGet("{page}/{pageSize}")]
+        public ActionResult<Dictionary<string, object>> GetQuizes([FromRoute] int page, [FromRoute] int pageSize)
         {
             var quizzes = _service.GetPublicQuizes(page, pageSize);
             return Ok(quizzes);
