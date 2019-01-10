@@ -33,5 +33,18 @@ namespace QuizITAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("textRecognition")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> GetTextImage()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { message = "Wrong file" });
+            }
+
+            return Ok(await new OCRService().MakeOCRImageRequestAsync(Request.Form.Files[0]));
+        }
     }
 }
